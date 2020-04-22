@@ -15,3 +15,9 @@ Please refer to the official documentation for more examples and up-to-date API 
 - [curl](/curl/) - Examples for doing common tasks with curl commands (REST API)
 - [php](/php/) - Example predict request in php
 - [python](/python/) - Utility scripts in python (using [discovery API](https://developers.google.com/discovery/))
+
+## TPT
+
+- Download gcr-poc.json from LastPass, put it in this repo directory
+
+All scripts must be run from the repository as current working directory.
