@@ -1,15 +1,16 @@
-gcr-poc.json
 .vscode/
-*.swp
+**/*.swp
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.Python
 
 # C extensions
-*.so
-*.tgz
+**/*.so
+**/*.tgz
 # Override to allow tgz as helm dependent charts
 !**/charts/*.tgz
 
@@ -24,12 +25,12 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
-.pytest_cache/
-.mypy_cache/
+**/.pytest_cache/
+**/.mypy_cache/
 
 # Translations
-*.mo
-*.pot
+**/*.mo
+**/*.pot
 
 # Environments
 .*env*
@@ -41,3 +42,7 @@ coverage.xml
 
 .idea/
 .vscode/
+
+**/*secret*.yaml
+**/*secret*.yml
+

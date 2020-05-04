@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: gcr-poc-today-purchase-complete
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - args:
+            - bash
+            - -c
+            - |
+              set -euxo pipefail
+              ./tpt/today_purchase-complete.sh
+            env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS__B64
+              valueFrom:
+                secretKeyRef:
+                  key: b64
+                  name: gcp-gcr-poc
+            image: teacherspayteachers/python-etl:bk
+            imagePullPolicy: Always
+            name: gcr-poc
+            resources:
+              limits:
+                cpu: "1"
+                memory: 2Gi
+              requests:
+                cpu: "1"
+                memory: 2Gi
+          imagePullSecrets:
+          - name: tptreadonly-docker
+          restartPolicy: OnFailure
+  schedule: 0 1 * * *
+  successfulJobsHistoryLimit: 3
+  suspend: false
