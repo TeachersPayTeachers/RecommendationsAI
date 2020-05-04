@@ -40,6 +40,7 @@ select
   , array_agg(item_id) as item_ids
   , sum(gmv) as gmv
 from foi
+where 1=1
 {%- if dt %}
   {%- if backfill == 'yes' %}
   and date(created_at) >= '{{ dt }}'
