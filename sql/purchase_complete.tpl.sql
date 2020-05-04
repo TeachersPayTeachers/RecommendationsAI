@@ -41,7 +41,11 @@ select
   , sum(gmv) as gmv
 from foi
 {%- if dt %}
-where date(created_at) = '{{ dt }}'
+  {%- if backfill == 'yes' %}
+  and date(created_at) >= '{{ dt }}'
+  {%- else %}
+  and date(created_at) = '{{ dt }}'
+  {%- endif %}
 {%- endif %}
 group by order_id
 )

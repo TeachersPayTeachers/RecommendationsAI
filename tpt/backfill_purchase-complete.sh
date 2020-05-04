@@ -1,12 +1,41 @@
 #!/bin/bash
 set -euxo pipefail
 . gcp.sh
-TABLE="tpt-data-warehouse-prod:dev_outbox.backfill_purchase_complete"
-GCS='gs://tpt_data_sci_dev/resources-recommendations/purchase-complete/backfill/*.json'
-SQL="$(jinja2 sql/purchase_complete.tpl.sql)"
+DT_CMD="date"
+EXPIRE="86400"  # 1 day in seconds
+YEAR='2020'
+MONTH='04'
+DAY='20'
+RUN="$($DT_CMD +'%s' -d "$LOOKBACK")"
+TABLE="tpt-data-warehouse-prod:dev_outbox.purchase_complete_backfill_$YEAR$MONTH$DAY"
+GCS="gs://tpt_data_sci_dev/resources-recommendations/purchase-complete/backfill/$YEAR/$MONTH/$DAY/$RUN/*.json"
+GCS_ERROR="gs://tpt_data_sci_dev/resources-recommendations-errors/"
+SQL="$(jinja2 --strict -D dt=$YEAR-$MONTH-$DAY -D backfill=yes sql/purchase_complete.tpl.sql)"
+PROJECT="tpt-data-warehouse-prod"
 
 bq query --allow_large_results --nouse_legacy_sql \
   --replace=true --destination_table="$TABLE" \
   "$SQL"
 
 bq extract --destination_format=NEWLINE_DELIMITED_JSON "$TABLE" "$GCS"
+
+EVENT_IMPORT="
+{
+  \"errorsConfig\": {
+    \"gcsPrefix\": \"$GCS_ERROR\"
+  },
+ \"inputConfig\": {
+    \"gcsSource\": {
+      \"inputUris\": [\"$GCS\"]
+    }
+  }
+}
+"
+
+echo -n "$EVENT_IMPORT" | jq empty
+echo "$GOOGLE_APPLICATION_CREDENTIALS"
+
+curl -X POST \
+  -H "Content-Type: application/json; charset=utf-8" -d "$EVENT_IMPORT" \
+  -H "Authorization: Bearer "$(gcloud auth print-access-token)"" \
+  "https://recommendationengine.googleapis.com/v1beta1/projects/$PROJECT/locations/global/catalogs/default_catalog/eventStores/default_event_store/userEvents:import"

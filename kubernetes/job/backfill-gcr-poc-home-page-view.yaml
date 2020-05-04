@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backfill-gcr-poc-home-page-view
+spec:
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - args:
+        - bash
+        - -c
+        - |
+          set -euxo pipefail
+          ./tpt/backfill_home-page-view.sh
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS__B64
+          valueFrom:
+            secretKeyRef:
+              key: b64
+              name: gcp-gcr-poc
+        image: teacherspayteachers/python-etl:bk
+        imagePullPolicy: Always
+        name: gcr-poc
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: "1"
+            memory: 2Gi
+      imagePullSecrets:
+      - name: tptreadonly-docker

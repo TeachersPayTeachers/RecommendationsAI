@@ -8,7 +8,11 @@ hpv as (
   and session_date >= date_sub(current_date('America/New_York'), interval 13 month)
   {%- if dt %}
   and session_date >= '{{ dt }}' -- provided date is utc, session_date is ny, but >= will be fine
-  and date(hit_started_at) = '{{ dt }}'
+    {%- if backfill == 'yes' %}
+    and date(hit_started_at) >= '{{ dt }}'
+    {%- else %}
+    and date(hit_started_at) = '{{ dt }}'
+    {%- endif %}
   {%- endif %}
 )
 select

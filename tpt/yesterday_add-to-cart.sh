@@ -11,7 +11,7 @@ RUN="$($DT_CMD +'%s' -d "$LOOKBACK")"
 TABLE="tpt-data-warehouse-prod:dev_outbox.add_to_cart_$YEAR$MONTH$DAY"
 GCS="gs://tpt_data_sci_dev/resources-recommendations/add-to-cart/$YEAR/$MONTH/$DAY/$RUN/*.json"
 GCS_ERROR="gs://tpt_data_sci_dev/resources-recommendations-errors/"
-SQL="$(jinja2 --strict -D dt=$YEAR-$MONTH-$DAY sql/add_to_cart.tpl.sql)"
+SQL="$(jinja2 --strict -D dt=$YEAR-$MONTH-$DAY -D backfill=no sql/add_to_cart.tpl.sql)"
 PROJECT="tpt-data-warehouse-prod"
 
 bq query --allow_large_results --nouse_legacy_sql \
