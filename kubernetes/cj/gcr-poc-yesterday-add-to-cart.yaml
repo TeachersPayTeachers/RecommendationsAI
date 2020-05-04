@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: gcr-poc-today-purchase-complete
+  name: gcr-poc-yesterday-add-to-cart
 spec:
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 5
@@ -15,7 +15,7 @@ spec:
             - -c
             - |
               set -euxo pipefail
-              ./tpt/today_purchase-complete.sh
+              ./tpt/yesterday_add-to-cart.sh
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS__B64
               valueFrom:

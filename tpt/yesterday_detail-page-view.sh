@@ -3,15 +3,15 @@ set -euxo pipefail
 . gcp.sh
 DT_CMD="date"
 EXPIRE="86400"  # 1 day in seconds
-LOOKBACK='-0 day'
+LOOKBACK='-1 day'
 YEAR="$($DT_CMD +'%Y' -d "$LOOKBACK")"
 MONTH="$($DT_CMD +'%m' -d "$LOOKBACK")"
 DAY="$($DT_CMD +'%d' -d "$LOOKBACK")"
 RUN="$($DT_CMD +'%s' -d "$LOOKBACK")"
-TABLE="tpt-data-warehouse-prod:dev_outbox.purchase_complete_$YEAR$MONTH$DAY"
-GCS="gs://tpt_data_sci_dev/resources-recommendations/purchase-complete/$YEAR/$MONTH/$DAY/$RUN/*.json"
+TABLE="tpt-data-warehouse-prod:dev_outbox.detail_page_vew_$YEAR$MONTH$DAY"
+GCS="gs://tpt_data_sci_dev/resources-recommendations/detail-page-view/$YEAR/$MONTH/$DAY/$RUN/*.json"
 GCS_ERROR="gs://tpt_data_sci_dev/resources-recommendations-errors/"
-SQL="$(jinja2 --strict -D dt=$YEAR-$MONTH-$DAY sql/purchase_complete.tpl.sql)"
+SQL="$(jinja2 --strict -D dt=$YEAR-$MONTH-$DAY sql/detail_page_view.tpl.sql)"
 PROJECT="tpt-data-warehouse-prod"
 
 bq query --allow_large_results --nouse_legacy_sql \

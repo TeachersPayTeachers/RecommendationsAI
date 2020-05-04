@@ -11,12 +11,12 @@ RUN="$($DT_CMD +'%s' -d "$LOOKBACK")"
 TABLE="tpt-data-warehouse-prod:dev_outbox.purchase_complete_$YEAR$MONTH$DAY"
 GCS="gs://tpt_data_sci_dev/resources-recommendations/purchase-complete/$YEAR/$MONTH/$DAY/$RUN/*.json"
 GCS_ERROR="gs://tpt_data_sci_dev/resources-recommendations-errors/"
-SQL="$(jinja2 -D dt=$YEAR-$MONTH-$DAY sql/purchase_complete.tpl.sql)"
+SQL="$(jinja2 --strict -D dt=$YEAR-$MONTH-$DAY sql/purchase_complete.tpl.sql)"
 PROJECT="tpt-data-warehouse-prod"
 
 bq query --allow_large_results --nouse_legacy_sql \
   --replace=true --destination_table="$TABLE" \
-  "$SQL" 1>/dev/null
+  "$SQL"
 
 bq extract --destination_format=NEWLINE_DELIMITED_JSON "$TABLE" "$GCS"
 

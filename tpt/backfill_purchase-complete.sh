@@ -7,6 +7,6 @@ SQL="$(jinja2 sql/purchase_complete.tpl.sql)"
 
 bq query --allow_large_results --nouse_legacy_sql \
   --replace=true --destination_table="$TABLE" \
-  "$SQL" 1>/dev/null
+  "$SQL"
 
 bq extract --destination_format=NEWLINE_DELIMITED_JSON "$TABLE" "$GCS"
