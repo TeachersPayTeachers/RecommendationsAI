@@ -4,6 +4,7 @@ pv as (
   from `tpt_raw.web_traffic_hit_level` 
   where hit_type = 'PAGE'
   and user_id is not null
+  and item_id is not null
   and page_path_level1 = 'Product'
   and session_date >= date_sub(current_date('America/New_York'), interval 13 month)
   {%- if dt %}
