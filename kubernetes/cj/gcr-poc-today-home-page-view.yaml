@@ -15,7 +15,7 @@ spec:
             - -c
             - |
               set -euxo pipefail
-              ./tpt/today_home-page-view.sh
+              ./tpt/google/today_home-page-view.sh
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS__B64
               valueFrom:

@@ -15,7 +15,7 @@ spec:
             - -c
             - |
               set -euxo pipefail
-              ./tpt/today_purchase-complete.sh
+              ./tpt/google/today_purchase-complete.sh
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS__B64
               valueFrom:

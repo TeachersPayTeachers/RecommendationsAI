@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # This sample constructs and executes a simple curl command to call the
 # predict API,
@@ -7,9 +7,9 @@ import argparse
 import os
 import json
 
-APIKEY='<your registered API key>'
-PROJECT='<your project number>'
-PLACEMENT='<your placement id>'
+APIKEY='AIzaSyBB6vly3_VTPMLkLycwuIqHh5E55TRxMFQ'
+PROJECT='495428317352'
+PLACEMENT='resources-you-may-like-email'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('itemids',
@@ -55,5 +55,5 @@ PROJECT + \
 PLACEMENT + ':predict?key=' + APIKEY
 
 print(CMD)
-os.system(CMD)
+# os.system(CMD)
 

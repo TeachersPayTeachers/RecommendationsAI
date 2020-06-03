@@ -15,7 +15,7 @@ spec:
         - -c
         - |
           set -euxo pipefail
-          ./tpt/backfill_detail-page-view.sh
+          ./tpt/google/backfill_detail-page-view.sh
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS__B64
           valueFrom:
